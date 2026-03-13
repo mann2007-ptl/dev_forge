@@ -54,23 +54,106 @@ This enables developers to easily find teammates and build projects together.
 - MongoDB  
 - Mongoose  
 
+## Authentication
+- JWT (JSON Web Tokens)  
+- bcryptjs for password hashing  
+- Google Sign-In (OAuth)  
+
+---
+
+# 📁 Project Structure
+
+```
+dev_forge-main/
+├── Backend/
+│   ├── models/
+│   │   └── User.js
+│   ├── routes/
+│   │   ├── auth.js
+│   │   └── test.js
+│   ├── middleware/
+│   │   └── auth.js
+│   ├── server.js
+│   ├── .env
+│   └── package.json
+│
+├── Frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── ProtectedRoute.jsx
+│   │   │   └── GuestRoute.jsx
+│   │   ├── context/
+│   │   │   └── AuthContext.jsx
+│   │   ├── pages/
+│   │   │   ├── Login.jsx
+│   │   │   ├── Signup.jsx
+│   │   │   └── Dashboard.jsx
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   ├── tailwind.config.js
+│   └── package.json
+│
+└── README.md
+```
+
+---
+
+# 🚦 API Routes
+
+## Authentication Routes (`/api/auth`)
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|:---:|
+| `POST` | `/api/auth/signup` | Register a new user | ❌ |
+| `POST` | `/api/auth/login` | Login with email & password | ❌ |
+| `POST` | `/api/auth/google` | Sign in with Google | ❌ |
+| `GET` | `/api/auth/me` | Get current logged-in user | ✅ |
+
+## Test Route
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|:---:|
+| `GET` | `/api/test` | Health check – verify server is running | ❌ |
+
+---
+
+# 🌐 Frontend Routes
+
+| Path | Component | Access |
+|------|-----------|--------|
+| `/` | Redirect → `/login` | Public |
+| `/login` | Login Page | Guest only |
+| `/signup` | Signup Page | Guest only |
+| `/dashboard` | Dashboard | Authenticated only |
+
 ---
 
 # 🔐 Authentication System
 
-The application includes a **basic authentication system** with:
+The application includes a **JWT-based authentication system** with:
 
-- Signup page  
-- Login page  
-- Password validation  
+- Signup with name, email & password  
+- Login with email & password  
+- Sign in with Google (OAuth)  
 - Protected routes for authenticated users  
+- Guest-only routes for login & signup  
 
-### Authentication state is handled using:
+### Auth Flow
 
-- **localStorage** for persistent login  
-- **sessionStorage** for temporary session handling  
+```
+New User → Opens App → /login → Clicks "Sign Up" → /signup → Creates Account → /dashboard
 
-This allows the application to maintain login state and protect pages like **dashboard and profile**.
+Returning User → Opens App → Token found → Auto redirect → /dashboard
+
+User Logs Out → Token cleared → Redirected to /login
+```
+
+### How it works:
+
+- **JWT tokens** are generated on login/signup and stored in `localStorage`  
+- **Context API** manages auth state across the app  
+- **ProtectedRoute** component blocks unauthenticated access to dashboard  
+- **GuestRoute** component redirects logged-in users away from login/signup  
 
 ---
 
@@ -203,6 +286,53 @@ The user interface is fully responsive using **Tailwind CSS** and works properly
 - Desktop  
 - Tablet  
 - Mobile devices  
+
+---
+
+# ⚙️ Getting Started
+
+### Prerequisites
+
+- Node.js (v18+)
+- MongoDB (local or Atlas)
+- Google Cloud Console project (for Google Sign-In)
+
+### Backend Setup
+
+```bash
+cd Backend
+npm install
+```
+
+Create a `.env` file in the `Backend` folder:
+
+```env
+PORT=5000
+MONGO_URI=mongodb://localhost:27017/devforge
+JWT_SECRET=your_jwt_secret_here
+GOOGLE_CLIENT_ID=your_google_client_id_here
+```
+
+Start the backend:
+
+```bash
+npm run dev
+```
+
+### Frontend Setup
+
+```bash
+cd Frontend
+npm install
+```
+
+Start the frontend:
+
+```bash
+npm run dev
+```
+
+The app should now be running at `http://localhost:5173`
 
 ---
 
