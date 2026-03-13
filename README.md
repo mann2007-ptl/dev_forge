@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # DevForge – Developer Collaboration Platform 🚀
 
 DevForge is a **full stack web application** that helps developers and students **connect, collaborate, and build projects together**.
@@ -360,3 +361,6 @@ Passionate about **Full Stack Development and MERN Stack applications**.
 ---
 
 ⭐ If you like this project, consider giving it a **star on GitHub**.
+=======
+# dev_forge
+>>>>>>> c24b1085fed1f726bf55dd3c8ab99a8cb36a2cb6
